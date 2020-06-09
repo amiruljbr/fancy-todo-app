@@ -1,5 +1,6 @@
 const {User} = require('../models');
 const bcrypt = require('bcrypt');
+var jwt = require('jsonwebtoken');
 
 class UserController {
   static getAllUser(req,res){
@@ -36,14 +37,13 @@ class UserController {
     
     User.findOne({where: {username:dataUser.username}})
     .then(data =>{
-      
       if(!data) {
         res.status(409).json({message:"Username Not Found"})
       }
       else{
         if(bcrypt.compareSync(req.body.password, data.password)){
-          
-          res.status(200).json({id:data.id,username:data.username})
+          let token = jwt.sign({id:data.id,username:data.username}, 'amiruljbr');
+          res.status(200).json({id:data.id,username:data.username,token:token})
         }else{
           res.status(403).json({message:"Username/Id not valid"})
         }
