@@ -29,6 +29,22 @@ function errorHandler(err, req, res, next){
       errorCode = err.name;
       errorMassage = `You're not authorized to do this`;      
       break;
+    case 'SequelizeValidationError':
+      statusCode = 403;
+      errorCode = "VALIDATION_ERROR";
+      errorMassage = [];
+      err.errors.forEach(element => {
+        errorMassage.push(element.message)
+      });      
+      break;
+    case 'SequelizeUniqueConstraintError':
+      statusCode = 403;
+      errorCode = "CONSTRAINT_DB_ERROR";
+      errorMassage = [];
+      err.errors.forEach(element => {
+        errorMassage.push(element.message)
+      });      
+      break;
     default:
       statusCode = 500;
       errorCode = 'INTERNAL_ERROR_SERVER';

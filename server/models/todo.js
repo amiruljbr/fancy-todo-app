@@ -8,10 +8,31 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Todo.init({
-    title: DataTypes.STRING,
-    description: DataTypes.STRING,
+    title: {
+      type:DataTypes.STRING,
+      validate: {
+        notEmpty:{
+          msg: 'please fill the title'
+        }
+      }
+    },
+    description: {
+      type:DataTypes.STRING,
+      validate: {
+        notEmpty:{
+          msg: 'please fill the description'
+        }
+      }
+    },
     status: DataTypes.STRING,
-    due_date: DataTypes.DATE,
+    due_date: {
+      type:DataTypes.DATE,
+      validate: {
+        notEmpty:{
+          msg: 'please fill the due_date'
+        }
+      }
+    },
     UserId: DataTypes.INTEGER
   }, {sequelize});
 
