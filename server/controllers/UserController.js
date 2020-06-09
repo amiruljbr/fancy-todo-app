@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 
 class UserController {
-  static getAllUser(req,res){
+  static getAllUser(req,res, next){
     User.findAll()
     .then(data=>{
       res.status(200).json(data)
@@ -13,7 +13,7 @@ class UserController {
     })
   }
 
-  static added(req,res){
+  static added(req,res,next){
     let newUser = {
       username:req.body.username,
       password:req.body.password,
@@ -29,7 +29,7 @@ class UserController {
     })
   }
 
-  static loginPost(req,res){
+  static loginPost(req,res,next){
     let dataUser = {
       username:req.body.username,
       password:req.body.password
@@ -38,19 +38,18 @@ class UserController {
     User.findOne({where: {username:dataUser.username}})
     .then(data =>{
       if(!data) {
-        res.status(409).json({message:"Username Not Found"})
-      }
-      else{
+        next({name:"USER_NOT_FOUND"})
+      } else{
         if(bcrypt.compareSync(req.body.password, data.password)){
           let token = jwt.sign({id:data.id,username:data.username}, 'amiruljbr');
           res.status(200).json({id:data.id,username:data.username,token:token})
         }else{
-          res.status(403).json({message:"Username/Id not valid"})
+          next({name:"USER_NOT_FOUND", message:"invalid username / password"})
         }
       }
     })
     .catch(err =>{
-      res.status(500).json(err)
+      next(err)
     })
 
   }

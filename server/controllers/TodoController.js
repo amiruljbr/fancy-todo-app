@@ -1,17 +1,17 @@
 const {Todo} = require('../models');
 
 class TodoController {
-  static getAllTodo(req,res){
+  static getAllTodo(req,res,next){
     Todo.findAll()
     .then(data=>{
       res.status(200).json(data)
     })
     .catch(err=>{
-      res.status(500).json(err)
+      next(err);
     })
   }
 
-  static added(req,res){
+  static added(req,res,next){
     let newTodo = {
       title:req.body.title,
       description:req.body.description,
@@ -24,23 +24,23 @@ class TodoController {
       res.status(201).json(data)
     })
     .catch(err=>{
-      res.status(500).json(err)
+      next(err);
     })
   }
 
-  static delete(req,res){
+  static delete(req,res,next){
     Todo.destroy({where:{
       id:req.params.id
     }})
     .then(data=>{
-      res.status(200).json(data)
+      res.status(200).json({message:`Todo with id:${req.params.id} has been deleted`})
     })
     .catch(err=>{
-      res.status(500).json(err)
+      next(err)
     })
   }
 
-  static editPost(req,res){
+  static editPost(req,res,next){
     let dataTodo = {
       id:req.params.id,
       title:req.body.title,
@@ -59,10 +59,10 @@ class TodoController {
       }
     })
     .then(data=>{
-      res.status(200).json(data)
+      res.status(200).json({message:`Todo with id:${dataTodo.id} has been updated`})
     })
     .catch(err=>{
-      res.status(500).json(err)
+      next(err);
     })
   }
 }

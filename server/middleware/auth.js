@@ -4,21 +4,29 @@ const jwt = require('jsonwebtoken');
 function authentication(req,res,next){
   const access_token = req.headers.access_token;
   if(!access_token){
-    res.status(404).json({message: 'Token not found'})
-  }
-  else {
-    const decode = jwt.verify(access_token, 'amiruljbr');
+    next({name:"TOKEN_NOT_FOUND"})
+  } else {
+    let decode;
+    try {
+      decode = jwt.verify(access_token, 'amiruljbr');
+    } catch(err) {
+      next({name:"INVALID_TOKEN"});
+    }
+
     req.userData = decode;
+    if(!req.userData.id){
+      next({name:"INVALID_TOKEN"});
+    }
     User.findByPk(req.userData.id)
       .then(data => {
         if(data){
-          next()
+          next();
         } else {
-          res.status(404).json({message: 'Invalid user'})
+          next({name:"USER_NOT_FOUND"});
         }
       })
       .catch(err => {
-        res.status(401).json({message: err.message})
+        next({name:"INVALID_TOKEN"});
       })
   }
 }
@@ -29,9 +37,9 @@ function authorization(req,res,next){
   Todo.findByPk(id)
   .then(data=>{
     if(!data){
-      res.status(404).json({message:'Todo not Found'})
+      next({name:"TODO_NOT_FOUND"})
     } else if(data.UserId !== req.userData.id){
-      res.status(403).json({message:`You're not authorized to do this`});
+      next({name:'NOT_AUTHORIZED'})
     } else {
       next();
     }
