@@ -45,6 +45,22 @@ class TodoController {
     })
   }
 
+  static edit(req,res,next){
+    console.log(req.query);
+    Todo.findOne({
+      where:{
+        UserId:req.userData.id,
+        id:req.params.id
+      }
+    })
+    .then(data=>{
+      res.status(200).json(data)
+    })
+    .catch(err=>{
+      next(err);
+    })
+  }
+
   static editPost(req,res,next){
     let dataTodo = {
       id:req.params.id,

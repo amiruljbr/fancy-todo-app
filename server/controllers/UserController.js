@@ -42,7 +42,7 @@ class UserController {
         next({name:"USER_NOT_FOUND"})
       } else{
         if(bcrypt.compareSync(req.body.password, data.password)){
-          let token = jwt.sign({id:data.id,username:data.username}, 'amiruljbr');
+          let token = jwt.sign({id:data.id,username:data.username}, process.env.SECRET);
           res.status(200).json({id:data.id,username:data.username,token:token})
         } else{
           next({name:"USER_NOT_FOUND", message:"invalid email / password"})

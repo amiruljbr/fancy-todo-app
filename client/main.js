@@ -42,6 +42,7 @@ $(document).ready(function(){
     })
       .done(data=>{
         console.log(data)
+        home();
       })
       .fail(err=>{
         console.log(err)
@@ -113,6 +114,7 @@ function logout(){
 }
 
 function getTodos(){
+  emptyDataTodos();
   $.ajax({
     method: 'GET',
     url: baseUrl + '/todos',
@@ -130,20 +132,24 @@ function getTodos(){
 }
 
 function appendDataTodos(array){
-  for (let i in array) {
+  for (let i=0; i<array.length;i++) {
     $('#dataTodos').append(`
     <tr>
-      <th scope="row">3</th>
-      <td>Menyapu</td>
-      <td>Menyapu lantai</td>
+      <th scope="row">${i +1}</th>
+      <td>${array[i].title}</td>
+      <td>${array[i].title}</td>
       <td>
         <button type="button" class="btn btn-primary">Detail</button>
         <button type="button" class="btn btn-secondary">Edit</button>
-        <button type="button" class="btn btn-danger">Delete</button>
-           </td>
-              </tr>
+        <button onclick="deleteTodos(${array[i].id})" type="button" class="btn btn-danger">Delete</button>
+      </td>
+    </tr>
     `)
   }
+}
+
+function emptyDataTodos(){
+  $('#dataTodos').empty();
 }
 
 function deleteTodos(idTodos){

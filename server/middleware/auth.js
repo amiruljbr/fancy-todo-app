@@ -8,7 +8,7 @@ function authentication(req,res,next){
   } else {
     let decode;
     try {
-      decode = jwt.verify(access_token, 'amiruljbr');
+      decode = jwt.verify(access_token, process.env.SECRET);
     } catch(err) {
       next({name:"INVALID_TOKEN"});
     }
