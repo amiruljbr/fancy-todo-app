@@ -1,6 +1,7 @@
 const {User} = require('../models');
 const bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken');
+const { Op } = require("sequelize");
+const jwt = require('jsonwebtoken');
 
 class UserController {
   static getAllUser(req,res, next){
@@ -35,7 +36,7 @@ class UserController {
       password:req.body.password
     }
     
-    User.findOne({where: {username:dataUser.username}})
+    User.findOne({where:{[Op.or]: [{username:dataUser.username}, {email:dataUser.username}]} } )
     .then(data =>{
       if(!data) {
         next({name:"USER_NOT_FOUND"})
@@ -43,8 +44,8 @@ class UserController {
         if(bcrypt.compareSync(req.body.password, data.password)){
           let token = jwt.sign({id:data.id,username:data.username}, 'amiruljbr');
           res.status(200).json({id:data.id,username:data.username,token:token})
-        }else{
-          next({name:"USER_NOT_FOUND", message:"invalid username / password"})
+        } else{
+          next({name:"USER_NOT_FOUND", message:"invalid email / password"})
         }
       }
     })
