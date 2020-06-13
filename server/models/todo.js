@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     Todo.belongsTo(models.User)
   };
 
-  Todo.addHook('beforeValidate', (todo, options) => {
+  Todo.addHook('beforeCreate', (todo, options) => {
     todo.status = 'uncompleted'
   });
 

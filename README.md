@@ -20,6 +20,7 @@
 > - Add Todo - this button for create your Todo
 > - Edit - this button allow you to Edit Todo
 > - Detail - this button will provide you Detail of your Todo
+> - Done - this button will change status your Todo To Done
 &nbsp;
 # RESTful endpoints
 ## Global Responses
@@ -241,6 +242,7 @@ _Response (200)_
   }
 
 ```
+---
 ## POST /todos/edit/:id
 > To submit Form Edit Todos
 _Request Header_
@@ -274,6 +276,32 @@ _Response (200)_
     "UserId": 10,
     "createdAt": "2020-06-13T08:32:40.126Z",
     "updatedAt": "2020-06-13T08:32:40.126Z"
+  }
+
+```
+---
+## POST /todos/edit/:id/done
+> To submit Form Edit Todos
+_Request Header_
+```
+{
+    "token": <token>
+}
+```
+_Request Params_
+```
+{
+    "id":<id token>
+}
+```
+_Request Body_
+```
+no Need
+```
+_Response (200)_
+```
+  {
+    message: "data id 9 has been done"
   }
 
 ```

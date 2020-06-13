@@ -190,6 +190,50 @@
             </div>
           </div>
         </div>
+
+         <!-- Button trigger modal Delete-->
+      
+  
+        <!-- Modal -->
+        <div class="modal fade" id="deleteTodoId" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Delete Todo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <table class="table table-hover table-bordered">
+                  <h4>Are You Sure Want To Delete This Item?</h4>
+                  <tbody>
+                    <tr>
+                      <th>Title</th>
+                      <td id="titleDetailDel">1</td>
+                    </tr>
+                    <tr>
+                      <th>Description</th>
+                      <td id="descriptionDetailDel">1</td>
+                    </tr>
+                    <tr>
+                      <th>Due Date</th>
+                      <td id="dueDateDetailDel">1</td>
+                    </tr>
+                    <tr>
+                      <th>Status</th>
+                      <td id="statusDetailDel">1</td>
+                    </tr>
+                  </tbody>
+
+                </table>
+                <div id="buttonDeleteTodos" class="modal-footer">
+                  <!-- Get From JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       
          
         <h4>List Todo</h4>
@@ -199,6 +243,7 @@
               <th scope="col">#</th>
               <th scope="col">Title</th>
               <th scope="col">Due Date</th>
+              <th scope="col">Status</th>
               <th scope="col">Action</th>
             </tr>
           </thead>

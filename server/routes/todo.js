@@ -8,5 +8,6 @@ router.post('/create',TodoController.added);
 router.delete('/delete/:id',authorization,TodoController.delete);
 router.get('/edit/:id',authorization,TodoController.edit);
 router.post('/edit/:id',authorization,TodoController.editPost);
+router.post('/edit/:id/done',authorization,TodoController.editPostDone);
 
 module.exports = router;

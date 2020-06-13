@@ -89,6 +89,34 @@ class TodoController {
       next(err);
     })
   }
+
+  static editPostDone(req,res,next){
+    let dataTodo
+    Todo.findOne({
+      where:{
+        id:req.params.id
+      }
+    })
+    .then(data=>{
+      dataTodo=data;
+      return Todo.update({
+        title:dataTodo.title,
+        description:dataTodo.description,
+        due_date:dataTodo.due_date,
+        status: 'Done'
+      }, {
+        where: {
+          id: dataTodo.id
+        }
+      })
+    })
+    .then(data2=>{
+      res.status(200).json({message:`Todo with id:${dataTodo.id} has been updated`})
+    })
+    .catch(err=>{
+      next(err);
+    })
+  }
 }
 
 module.exports = TodoController;

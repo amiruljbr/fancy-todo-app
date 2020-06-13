@@ -215,17 +215,32 @@ function getTodos(){
 function appendDataTodos(array){
   emptyDataTodos();
   for (let i=0; i<array.length;i++) {
-    $('#dataTodos').append(`
-    <tr>
-      <th scope="row">${i +1}</th>
-      <td>${array[i].title}</td>
-      <td>${new Date(array[i].due_date).toDateString().replace(/ /,', ')}</td>
-      <td>
-        <button  class="btn btn-primary" onclick="getDetailTodos(${array[i].id})" data-toggle="modal" data-target="#detailTodoModal" type="button">Detail</button>
-        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalId${array[i].id}">Edit</button>
-        <button onclick="deleteTodos(${array[i].id})" type="button" class="btn btn-danger">Delete</button>    
-      </td>
-    </tr>`)
+    if(array[i].status=='uncompleted') {
+      $('#dataTodos').append(`
+      <tr>
+        <th scope="row">${i +1}</th>
+        <td>${array[i].title}</td>
+        <td>${new Date(array[i].due_date).toDateString().replace(/ /,', ')}</td>
+        <td>${array[i].status}</td>
+        <td>
+          <button onclick="doneTodos(${array[i].id})" type="button" class="btn btn-success">Done</button>
+          <button  class="btn btn-primary" onclick="getDetailTodos(${array[i].id})" data-toggle="modal" data-target="#detailTodoModal" type="button">Detail</button>
+          <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalId${array[i].id}">Edit</button>
+          <button onclick="getDeleteTodos(${array[i].id})"  data-toggle="modal" data-target="#deleteTodoId" type="button" class="btn btn-danger">Delete</button>    
+        </td>
+      </tr>`)
+    } else {
+      $('#dataTodos').append(`
+      <tr>
+        <th scope="row">${i +1}</th>
+        <td>${array[i].title}</td>
+        <td>${new Date(array[i].due_date).toDateString().replace(/ /,', ')}</td>
+        <td>${array[i].status}</td>
+        <td>
+          <button  class="btn btn-primary" onclick="getDetailTodos(${array[i].id})" data-toggle="modal" data-target="#detailTodoModal" type="button">Detail</button>
+        </td>
+      </tr>`)
+    }
     
    
     $('#dataModal').append(`
@@ -251,7 +266,7 @@ function appendDataTodos(array){
           </div>
           <div class="form-group">
             <label for="formGroupExampleInput3">Due Date</label>
-            <input type="date" value="${array[i].due_date}" class="form-control" id="inputDueDate${array[i].id}">
+            <input type="date" value="${array[i].due_date.toString().substr(0, 10)}" class="form-control" id="inputDueDate${array[i].id}">
           </div>
           <div class="modal-footer">
               <button type="submit" class="btn btn-primary">Edit</button>
@@ -315,11 +330,32 @@ function deleteTodos(idTodos){
     }) 
 }
 
+
+
 function editTodos(idTodos){
   console.log('submit edit')
   $.ajax({
     method: 'POST',
     url: baseUrl + '/todos/edit/' + idTodos,
+    headers: {
+      access_token: localStorage.token
+    }
+  })
+    .done(data=>{
+      console.log(data);
+      home();
+    })
+    .fail(err=>{
+      console.log(err.responseJSON)
+    }) 
+}
+
+function doneTodos(idTodos){
+  event.preventDefault
+  console.log('submit done')
+  $.ajax({
+    method: 'POST',
+    url: baseUrl + '/todos/edit/' + idTodos + '/done',
     headers: {
       access_token: localStorage.token
     }
@@ -370,6 +406,36 @@ function getDetailTodos(idTodos){
       $('#descriptionDetail').append(data.description.replace(/\n/g, "<br />"));
       $('#dueDateDetail').append(new Date(data.due_date).toDateString().replace(/ /,', '));
       $('#statusDetail').append(data.status);
+      home();
+    })
+    .fail(err=>{
+      console.log(err.responseJSON)
+    }) 
+}
+
+function getDeleteTodos(idTodos){
+  console.log('process delete')
+  $('#titleDetailDel').empty();
+  $('#descriptionDetailDel').empty();
+  $('#dueDateDetailDel').empty();
+  $('#statusDetailDel').empty();
+  $('#buttonDeleteTodos').empty();
+  $.ajax({
+    method: 'GET',
+    url: baseUrl + '/todos/edit/' + idTodos,
+    headers: {
+      access_token: localStorage.token
+    }
+  })
+    .done(data=>{
+      console.log(data);
+      $('#titleDetailDel').append(data.title);
+      $('#descriptionDetailDel').append(data.description.replace(/\n/g, "<br />"));
+      $('#dueDateDetailDel').append(new Date(data.due_date).toDateString().replace(/ /,', '));
+      $('#statusDetailDel').append(data.status);
+      $('#buttonDeleteTodos').append(`
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+      <button onclick="deleteTodos(${data.id})" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>`)
       home();
     })
     .fail(err=>{
