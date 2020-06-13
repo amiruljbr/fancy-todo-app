@@ -33,7 +33,8 @@ module.exports = (sequelize, DataTypes) => {
         },
         isEmail:true
       }
-    }
+    },
+    urlImage: DataTypes.STRING
   }, {sequelize});
 
   User.associate = function(models) {
@@ -45,6 +46,9 @@ module.exports = (sequelize, DataTypes) => {
     const salt = bcrypt.genSaltSync(10)
     const hash = bcrypt.hashSync(instance.password, salt)
     instance.password = hash
+    if (instance.urlImage == ''){
+      instance.urlImage='https://i.stack.imgur.com/l60Hf.png';
+    }
   })
 
   return User;

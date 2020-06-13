@@ -6,7 +6,10 @@ class TodoController {
     Todo.findAll({
       where:{
         UserId:req.userData.id
-      }
+      },
+      order: [
+        ['due_date']
+      ]
     })
     .then(data=>{
       res.status(200).json(data)
@@ -20,7 +23,7 @@ class TodoController {
     let newTodo = {
       title:req.body.title,
       description:req.body.description,
-      due_date:req.body.due_date,
+      due_date:new Date (req.body.due_date),
       UserId:req.userData.id
     }
 
@@ -66,7 +69,7 @@ class TodoController {
       id:req.params.id,
       title:req.body.title,
       description:req.body.description,
-      due_date:req.body.due_date,
+      due_date: new Date (req.body.due_date),
       UserId:req.userData.id
     }
 

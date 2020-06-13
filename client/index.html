@@ -5,6 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <!-- Google Login -->
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="21114092654-2m1l0gtuertpmraoitrlhuhjov1afok1.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <title>Fancy Todo</title>
@@ -17,19 +22,21 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-          <a onclick="home()" id="home-btn" class="nav-item nav-link" href="#">Home</a>
-          <a onclick="register()" id="register-btn" class="nav-item nav-link" href="#">Register</a>
-          <a onclick="logout()" id="logout-btn" class="nav-item nav-link" href="#">Logout</a>
+          <a onclick="home(event)" id="home-btn" class="nav-item nav-link" href="#">Home</a>
+          <a onclick="register(event)" id="register-btn" class="nav-item nav-link" href="#">Register</a>
+          <a onclick="logout(event)" id="logout-btn" class="nav-item nav-link" href="#">Logout</a>
+          <div class="nav-item nav-link" id="profilePicture">
+       
+          </div>
         </div>
       </div>
+      
     </nav>
 
-    <section id="login">
-      
+    <section id="login">      
       <div class="container-sm text-center">
-        <h3>Login</h3>
         <form class="form-signin" id="login-form">
-          <img class="mb-4" src="/docs/4.5/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+          <img class="mb-4" src="https://2.bp.blogspot.com/-2TZJ3M9sSx4/Vs7gZnFNwgI/AAAAAAAABUM/v3R88LMR0Zc/s1600/login.png" alt="" width="100" height="72">
           <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
           <label for="inputEmail" class="sr-only">Username / Email address</label>
           <input type="username" id="inputLoginEmail" class="form-control" placeholder="Username / Email address" required="" autofocus="">
@@ -50,7 +57,7 @@
         <div class="text-center">
           <p></p> Do You have Google Account?
         </div>
-        <button class="btn btn-lg btn-primary btn-block"">Login With Google</button>
+        <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark">Login With Google</div>
         <p class="mt-5 mb-3 text-muted">© amiruljbr 2020</p>
       </div>
     </section>
@@ -58,6 +65,14 @@
     <section id="register">
       <div class="container-sm">
         <h3>Register</h3>
+        <form id="imgur">
+          <div class="form-group row">
+            <label for="inputName" class="col-sm-2 col-form-label">Profile Picture</label>
+            <div class="col-sm-10">
+              <input type="file" id="uploadImage" class="imgur" accept="image/*" data-max-size="5000" />
+            </div>
+          </div>
+        </form>
       <form id="register-form">
         <div class="form-group row">
           <label for="inputName" class="col-sm-2 col-form-label">Username</label>
@@ -77,6 +92,7 @@
             <input type="password" class="form-control" id="inputRegisterPassword">
           </div>
         </div>
+        
         <div class="form-group row">
           <div class="col-sm-10">
             <button type="submit" class="btn btn-primary">Register</button>
@@ -87,40 +103,102 @@
     </section>
 
     <section id="home">
-      
-      <div class="container-sm">
-        <h3>Fancy Todo</h3>
-        <h4>Add Todo</h4>
-        <form id="todo-form">
-          <div class="form-group">
-            <label for="formGroupExampleInput">Title:</label>
-            <input type="text" class="form-control" id="inputTitle" placeholder="Input Title">
-          </div>
-          <div class="form-group">
-            <label for="formGroupExampleInput2">Description</label>
-            <textarea class="form-control" id="inputDescription" placeholder="Input Description"></textarea>
-          </div>
-          <div class="form-group">
-            <label for="formGroupExampleInput3">Due Date</label>
-            <input type="date" class="form-control" id="inputDueDate">
-          </div>
-          <div class="form-group">
-            <div class="formGroupExampleInput3">
-              <button type="submit" class="btn btn-primary">Add Todo</button>
+      <!-- Button trigger modal -->
+      <div class="container-sm">  
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+        Add Todo
+      </button>
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalCenterTitle">Add Todo</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form id="todo-form">
+                <div class="form-group">
+                  <label for="formGroupExampleInput">Title:</label>
+                  <input type="text" class="form-control" id="inputTitle" placeholder="Input Title">
+                </div>
+                <div class="form-group">
+                  <label for="formGroupExampleInput2">Description</label>
+                  <textarea class="form-control" id="inputDescription" placeholder="Input Description"></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="formGroupExampleInput3">Due Date</label>
+                  <input type="date" class="form-control" id="inputDueDate">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Add Todo</button>
+                </div>
+              </form>
             </div>
           </div>
-        </form>
+        </div>
       </div>
+
+       <!-- Button trigger modal Detail-->
+  
+        <!-- Modal -->
+        <div class="modal fade" id="detailTodoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Detail Todo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <table class="table table-hover table-bordered">
+                  <!-- <thead>
+                    <tr>
+                      <th>Column</th>
+                      <th>Value</th>
+                    </tr>
+                  </thead> -->
+                  <tbody>
+                    <tr>
+                      <th>Title</th>
+                      <td id="titleDetail">1</td>
+                    </tr>
+                    <tr>
+                      <th>Description</th>
+                      <td id="descriptionDetail">1</td>
+                    </tr>
+                    <tr>
+                      <th>Due Date</th>
+                      <td id="dueDateDetail">1</td>
+                    </tr>
+                    <tr>
+                      <th>Status</th>
+                      <td id="statusDetail">1</td>
+                    </tr>
+                  </tbody>
+
+                </table>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
       
-      
-      <div class="container-xl">
+         
         <h4>List Todo</h4>
         <table class="table table-hover table-bordered">
           <thead>
             <tr>
               <th scope="col">#</th>
               <th scope="col">Title</th>
-              <th scope="col">Description</th>
+              <th scope="col">Due Date</th>
               <th scope="col">Action</th>
             </tr>
           </thead>
@@ -129,14 +207,18 @@
           </tbody>
         </table>
       </div>
+
+      <div id="dataModal">
+
+      </div>
     </section>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script> -->
-
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="main.js"></script>
   </body>
