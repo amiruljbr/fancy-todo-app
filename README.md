@@ -1,4 +1,4 @@
-# Music-App | Moody Music
+# Fancy Todo
 `Fancy Todo Project Week 1. Simple web application of manage Your Todo List. This app has :`
 > - Register
 > - Login
