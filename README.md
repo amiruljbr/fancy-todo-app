@@ -1,4 +1,4 @@
-# Music-App | Moody Music
+# Fancy Todo
 `Fancy Todo Project Week 1. Simple web application of manage Your Todo List. This app has :`
 > - Register
 > - Login
@@ -6,12 +6,15 @@
 > - Create Todo List
 > - Delete Todo List
 > - Edit Todo List
+---
 `environment variables: (.env)`
 > - PORT=
 > - SECRET=
 > - CLIENT_ID=
+---
 `link deploy:`
 > - _optional_
+---
 `Fancy Todo Guides:`
 > - Log In - this button automatically guide you to our main page
 > - Register - this button automatically store your user data to the application
@@ -30,7 +33,7 @@ _Response (500 - Unknown error)_
 { "message": "Interval Server Error" }
 ```
 ---
-## POST /users/create
+## POST /register
 > Create a new user account
 _Request Header_
 ```
@@ -60,11 +63,11 @@ _Response (201)_
 _Response (400 - Bad Request)_
 ```
 { 
-    "message": "Username may not be empty"
+    "message": "Username may not be empty, email may not be empty"
 }
 ```
 ---
-## POST /users/login
+## POST /login
 > Login for User exist
 _Request Header_
 ```
@@ -94,7 +97,7 @@ _Response (400 - Bad request)_
 }
 ```
 ---
-## POST /users/google-signin
+## POST /google-signin
 > Google sign in 
 _Request Header_
 ```
@@ -121,7 +124,7 @@ _Response (200)_
 _Request Header_
 ```
 {
-    "token": <token>
+    "access_token": <token>
 }
 ```
 _Request Body_
@@ -154,12 +157,12 @@ _Response (200)_
 ]
 ```
 ---
-## POST /todos/create
+## POST /todos
 > Create Todo List
 _Request Header_
 ```
 {
-    "token": <token>
+    "access_token": <token>
 }
 ```
 _Request Body_
@@ -172,25 +175,25 @@ _Request Body_
 ```
 _Response (201)_
 ```
-  {
-    "id": 6,
-    "title": "dsads",
-    "description": "fsafsaf",
-    "status": "uncompleted",
-    "due_date": "2020-06-06T00:00:00.000Z",
-    "UserId": 10,
-    "createdAt": "2020-06-13T08:32:40.126Z",
-    "updatedAt": "2020-06-13T08:32:40.126Z"
-  }
+{
+  "id": 6,
+  "title": "dsads",
+  "description": "fsafsaf",
+  "status": "uncompleted",
+  "due_date": "2020-06-06T00:00:00.000Z",
+  "UserId": 10,
+  "createdAt": "2020-06-13T08:32:40.126Z",
+  "updatedAt": "2020-06-13T08:32:40.126Z"
+}
 
 ```
 ---
-## DELETE /todos/delete/:id
+## DELETE /todos/:id
 > Delete Todo List
 _Request Header_
 ```
 {
-    "token": <token>
+    "access_token": <token>
 }
 ```
 _Request Params_
@@ -201,25 +204,25 @@ _Request Params_
 ```
 _Response (200)_
 ```
-  {
-    "id": 6,
-    "title": "dsads",
-    "description": "fsafsaf",
-    "status": "uncompleted",
-    "due_date": "2020-06-06T00:00:00.000Z",
-    "UserId": 10,
-    "createdAt": "2020-06-13T08:32:40.126Z",
-    "updatedAt": "2020-06-13T08:32:40.126Z"
-  }
+{
+  "id": 6,
+  "title": "dsads",
+  "description": "fsafsaf",
+  "status": "uncompleted",
+  "due_date": "2020-06-06T00:00:00.000Z",
+  "UserId": 10,
+  "createdAt": "2020-06-13T08:32:40.126Z",
+  "updatedAt": "2020-06-13T08:32:40.126Z"
+}
 
 ```
 ---
-## GET /todos/edit/:id
+## GET /todos/:id
 > Get data from selected id
 _Request Header_
 ```
 {
-    "token": <token>
+    "access_token": <token>
 }
 ```
 _Request Params_
@@ -230,25 +233,25 @@ _Request Params_
 ```
 _Response (200)_
 ```
-  {
-    "id": 6,
-    "title": "dsads",
-    "description": "fsafsaf",
-    "status": "uncompleted",
-    "due_date": "2020-06-06T00:00:00.000Z",
-    "UserId": 10,
-    "createdAt": "2020-06-13T08:32:40.126Z",
-    "updatedAt": "2020-06-13T08:32:40.126Z"
-  }
+{
+  "id": 6,
+  "title": "dsads",
+  "description": "fsafsaf",
+  "status": "uncompleted",
+  "due_date": "2020-06-06T00:00:00.000Z",
+  "UserId": 10,
+  "createdAt": "2020-06-13T08:32:40.126Z",
+  "updatedAt": "2020-06-13T08:32:40.126Z"
+}
 
 ```
 ---
-## POST /todos/edit/:id
+## PUT /todos/:id
 > To submit Form Edit Todos
 _Request Header_
 ```
 {
-    "token": <token>
+    "access_token": <token>
 }
 ```
 _Request Params_
@@ -267,25 +270,25 @@ _Request Body_
 ```
 _Response (200)_
 ```
-  {
-    "id": 6,
-    "title": "dsads",
-    "description": "fsafsaf",
-    "status": "uncompleted",
-    "due_date": "2020-06-06T00:00:00.000Z",
-    "UserId": 10,
-    "createdAt": "2020-06-13T08:32:40.126Z",
-    "updatedAt": "2020-06-13T08:32:40.126Z"
-  }
+{
+  "id": 6,
+  "title": "dsads",
+  "description": "fsafsaf",
+  "status": "uncompleted",
+  "due_date": "2020-06-06T00:00:00.000Z",
+  "UserId": 10,
+  "createdAt": "2020-06-13T08:32:40.126Z",
+  "updatedAt": "2020-06-13T08:32:40.126Z"
+}
 
 ```
 ---
-## POST /todos/edit/:id/done
+## PUT /todos/:id/done
 > To submit Form Edit Todos
 _Request Header_
 ```
 {
-    "token": <token>
+    "access_token": <token>
 }
 ```
 _Request Params_
@@ -300,8 +303,8 @@ no Need
 ```
 _Response (200)_
 ```
-  {
-    message: "data id 9 has been done"
-  }
+{
+  message: "data id 9 has been done"
+}
 
 ```

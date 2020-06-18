@@ -33,7 +33,7 @@ class UserController {
     })
   }
 
-  static loginPost(req,res,next){
+  static login(req,res,next){
     let dataUser = {
       username:req.body.username,
       password:req.body.password

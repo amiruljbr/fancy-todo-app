@@ -5,7 +5,7 @@ const userRouter = require('./user');
 router.get('/', (req,res)=>{
   res.send('aplikasi fancy todo')
 })
-router.use('/users',userRouter);
+router.use('/',userRouter);
 router.use('/todos',todoRouter);
 
 module.exports = router;
