@@ -13,7 +13,7 @@ $(document).ready(function(){
     let password = $('#inputLoginPassword').val(); 
     $.ajax({
       method: 'POST',
-      url: baseUrl + '/users/login',
+      url: baseUrl + '/login',
       data:{
         username, password
       }
@@ -46,7 +46,7 @@ $(document).ready(function(){
     let password = $('#inputRegisterPassword').val(); 
     $.ajax({
       method: 'POST',
-      url: baseUrl + '/users/create',
+      url: baseUrl + '/register',
       data:{
         username, email, password, urlImage
       }
@@ -72,7 +72,7 @@ $(document).ready(function(){
     let due_date = $('#inputDueDate').val(); 
     $.ajax({
       method: 'POST',
-      url: baseUrl + '/todos/create',
+      url: baseUrl + '/todos',
       headers: {
         access_token: localStorage.token
       },
@@ -269,8 +269,8 @@ function appendDataTodos(array){
             <input type="date" value="${array[i].due_date.toString().substr(0, 10)}" class="form-control" id="inputDueDate${array[i].id}">
           </div>
           <div class="modal-footer">
-              <button type="submit" class="btn btn-primary">Edit</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Update</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
           </div>
         </form>
       </div>
@@ -285,8 +285,8 @@ function appendDataTodos(array){
     let description= $('#inputDescription${array[i].id}').val();
     let due_date = $('#inputDueDate${array[i].id}').val(); 
     $.ajax({
-      method: 'POST',
-      url: baseUrl + '/todos/edit/${array[i].id}',
+      method: 'PUT',
+      url: baseUrl + '/todos/${array[i].id}',
       headers: {
         access_token: localStorage.token
       },
@@ -316,7 +316,7 @@ function deleteTodos(idTodos){
   console.log('proses delete')
   $.ajax({
     method: 'DELETE',
-    url: baseUrl + '/todos/delete/' + idTodos,
+    url: baseUrl + '/todos/' + idTodos,
     headers: {
       access_token: localStorage.token
     }
@@ -335,8 +335,8 @@ function deleteTodos(idTodos){
 function editTodos(idTodos){
   console.log('submit edit')
   $.ajax({
-    method: 'POST',
-    url: baseUrl + '/todos/edit/' + idTodos,
+    method: 'PUT',
+    url: baseUrl + '/todos/' + idTodos,
     headers: {
       access_token: localStorage.token
     }
@@ -354,8 +354,8 @@ function doneTodos(idTodos){
   event.preventDefault
   console.log('submit done')
   $.ajax({
-    method: 'POST',
-    url: baseUrl + '/todos/edit/' + idTodos + '/done',
+    method: 'PUT',
+    url: baseUrl + '/todos/' + idTodos + '/done',
     headers: {
       access_token: localStorage.token
     }
@@ -373,7 +373,7 @@ function getEditTodos(idTodos){
   console.log('process edit')
   $.ajax({
     method: 'GET',
-    url: baseUrl + '/todos/edit/' + idTodos,
+    url: baseUrl + '/todos/' + idTodos,
     headers: {
       access_token: localStorage.token
     }
@@ -395,7 +395,7 @@ function getDetailTodos(idTodos){
   $('#statusDetail').empty();
   $.ajax({
     method: 'GET',
-    url: baseUrl + '/todos/edit/' + idTodos,
+    url: baseUrl + '/todos/' + idTodos,
     headers: {
       access_token: localStorage.token
     }
@@ -422,7 +422,7 @@ function getDeleteTodos(idTodos){
   $('#buttonDeleteTodos').empty();
   $.ajax({
     method: 'GET',
-    url: baseUrl + '/todos/edit/' + idTodos,
+    url: baseUrl + '/todos/' + idTodos,
     headers: {
       access_token: localStorage.token
     }
@@ -434,7 +434,7 @@ function getDeleteTodos(idTodos){
       $('#dueDateDetailDel').append(new Date(data.due_date).toDateString().replace(/ /,', '));
       $('#statusDetailDel').append(data.status);
       $('#buttonDeleteTodos').append(`
-      <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
       <button onclick="deleteTodos(${data.id})" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>`)
       home();
     })
@@ -447,7 +447,7 @@ function onSignIn(googleUser) {
   let id_token = googleUser.getAuthResponse().id_token;
   $.ajax({
     method: "POST",
-    url: `http://localhost:3000/users/google-signin`,
+    url: `http://localhost:3000/google-signin`,
     data: { id_token },
     success: function(data){
       localStorage.setItem("token", data.access_token)
